@@ -5,7 +5,7 @@ class Header extends React.Component{
     }
     render(){
         return(
-            <header>
+            <header className = 'login_header'>
                 {this.props.title}
             </header>
         )

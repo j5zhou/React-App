@@ -33,6 +33,7 @@ class Login_Form extends React.Component {
         postRequest("/userlogin",data).then((result)=>{
             console.log(result);
             if(result.status === 200){
+                window.sessionStorage.setItem("email",this.state.email);
                 window.location.href = "/";
             }else if(result.status === 400){
                 this.setState({

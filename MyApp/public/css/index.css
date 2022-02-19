@@ -1,0 +1,116 @@
+.home_header_navigation,.home_header_subnavigation,.searchbar{
+    position: absolute;
+    width: 100%;
+    height: 8rem;
+    line-height: 8rem;
+}
+.home_header_subnavigation{
+    top:8rem;
+}
+.searchbar{
+    top:16rem;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.form-control{
+    font-size: 2rem;
+}
+
+.home_header-itemslist,.home_header-subitemslist{
+    display: flex;
+    width: 100%;
+    font-size: 3rem;
+    justify-content: space-around;
+}
+.home_header-item,.home_header-subitem{
+    cursor: pointer;
+    color: #ffffff;
+}
+.recipes_container{
+    display: flex;
+    justify-content: space-around;
+    padding-left: 50px;
+    padding-right: 50px;
+    height: 100%;
+    align-items: center;
+}
+.recipe_card{
+    width: 25rem;
+    transition: opacity 0.5s ease-in;
+}
+.recipe_card_img{
+    width: 100%;
+}
+.offcanvas_button{
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    background-image: url("/static/images/hamburger.png");
+    left: 3px;
+    top:max(225px,var(--home-header-size) + 5px);
+    background-size: cover;
+    border: none;
+    background-color: #ffffff;
+}
+
+.leftarrow_button,.rightarrow_button,.return-btn{
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    border: none;
+    background-color: #ffffff;
+    background-size: cover;
+}
+.leftarrow_button{
+    left: 3px;
+    background-image: url("/static/images/left-arrow.png");
+}
+.rightarrow_button{
+    right: 3px;
+    background-image: url("/static/images/right-arrow.png");
+}
+.return-btn{
+    right: 3px;
+    background-image: url("/static/images/return-btn.jpg");
+}
+.recipe_detail{
+    height: 100%;
+    width: 100%;
+}
+.recipe_detail_label{
+    height: var(--header-size);
+    text-align: center;
+    line-height: var(--header-size);
+}
+.recipe_detail_content{
+    height: calc(100% - var(--header-size));
+    width: 100%;
+    display: flex;
+}
+.recipe_detail_content-left,.recipe_detail_content-right{
+    width: 50%;
+    padding: 2rem;
+}
+.recipe_detail_content-left div,.recipe_detail_content-right div{
+    line-height: var(--header-size);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.recipe_favor_list{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.recipe_favor_list-col1{
+    width: 20%;
+    padding: 2rem;
+}
+.recipe_favor_list-col2,.recipe_favor_list-col3,.recipe_favor_list-col4{
+    width: 25%;
+    padding: 2rem;
+}

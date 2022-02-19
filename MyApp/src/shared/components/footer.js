@@ -5,7 +5,7 @@ class Footer extends React.Component{
     }
     render(){
         return(
-            <footer>
+            <footer className = 'login_footer'>
                 This is the Footer
             </footer>
         )

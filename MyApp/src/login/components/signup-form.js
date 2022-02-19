@@ -30,6 +30,7 @@ class Signup_Form extends React.Component {
         const data = {email:this.state.email,password:this.state.password}
         postRequest("/signup",data).then((result)=>{
             if(result.status === 201){
+                window.sessionStorage.setItem("email",this.state.email);
                 window.location.href = "/";
             }else if(result.status === 400){
                 this.setState({

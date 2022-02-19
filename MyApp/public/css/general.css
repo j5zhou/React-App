@@ -1,6 +1,8 @@
 :root{
     --header-size:4rem;
     --footer-size:4rem;
+    --home-header-size:19vw;
+    --footer-header-size:8rem;
     --color-primay:#064c88;
     --color-white:#e9e7e6;
 }
@@ -11,27 +13,45 @@
     font-family: 'Times New Roman', Times, serif;
 }
 html,
-body {
+body,#root{
     height: 100%;
     width: 100%;
     overflow: hidden;
+    min-width: 1150px;
 }
 html{
     font-size: 0.625rem;
 }
-header{
+.login_header{
     height: var(--header-size);
     background-color: var(--color-primay);
     color: var(--color-white);
 }
-footer{
+.login_footer{
     height: var(--footer-size);
     background-color: var(--color-primay);
     color: var(--color-white);
     font-size: 2rem;
 }
+.home_header{
+    min-height: 220px;
+    height: var(--home-header-size);
+    width: 100%;
+    background-image: url("/static/images/home-header-2.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.home_footer{
+    width: 100%;
+    height: 8rem;
+    font-size: 2rem;
+    color: #ffffff;
+    line-height: 8rem;
+    background: linear-gradient(140deg,#033e63,#9c9ff7,#33333b);
+}
 main{
-    height: calc(100% - var(--footer-size) - var(--header-size) );
+    height: calc(100% - var(--home-header-size) - var(--footer-header-size));
+    max-height: calc(100% - 220px - var(--footer-header-size));
 }
 .center-container{
     height: 100%;
@@ -43,4 +63,30 @@ main{
     display: flex;
     justify-content: space-between;
 }
-
+.css-vubbuv{
+    font-size: 2rem !important;
+}
+.flex-container{
+    display: flex;
+    justify-content: space-between;
+}
+.off-canvas{
+    width: 20rem;
+    background-color: #212121;
+}
+.off-canvas-title{
+    font-size: 2.3rem;
+    color: #ffffff;
+}
+.off-canvas-body{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.off-canvas-btn{
+    color: #ffffff;
+    font-size: 2rem;
+    background-color: inherit;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+}
