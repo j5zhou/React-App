@@ -1,8 +1,11 @@
 ## Features Schedule
-- Searchbar
+- Page distribution
 - responsive
-- Service Worker
 - Server render
 - logout
 - recommendation
 - modify the recipe
+- Service Worker
+
+## Done Feature:
+- Searchbar

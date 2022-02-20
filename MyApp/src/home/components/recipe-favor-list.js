@@ -67,10 +67,6 @@ class Recipe_Favor_List extends React.Component {
         this.handleOpen();
     }
 
-    returnToHome = ()=>{
-        this.props.returnToHome();
-    }
-
 
     render() {
         const items_ls = this.state.favoriteRecipe_arr.map((item) => {
@@ -91,7 +87,6 @@ class Recipe_Favor_List extends React.Component {
 
         return (
             <section className="recipe_favor_list">
-                <button className="return-btn" onClick={this.returnToHome}></button>
                 <section className="recipe_favor_list-col1">
                     {items_ls}
                 </section>

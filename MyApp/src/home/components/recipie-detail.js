@@ -6,10 +6,6 @@ class Recipe_Detail extends React.Component {
     constructor(props) {
         super(props);
     }
-    returnFromDetail = () => {
-        this.props.returnToHome();
-    }
-
     toggleFavorite = () => {
         this.props.toggleFavorite(this.props.data.index);
     }
@@ -23,7 +19,6 @@ class Recipe_Detail extends React.Component {
                     <IconButton aria-label="add to favorites" color={colorType} onClick={this.toggleFavorite}>
                         <FavoriteIcon />
                     </IconButton>
-                    <button className="return-btn" onClick={this.returnFromDetail}></button>
                 </h2>
                 <section className="recipe_detail_content">
                     <section className="recipe_detail_content-left">

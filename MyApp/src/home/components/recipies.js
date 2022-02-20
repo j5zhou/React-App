@@ -3,10 +3,13 @@ import Recipe_data from '../../models/recipe.model';
 import recipes_api from '../../services/recipe.service';
 import Side_Canvas from '../../shared/components/sidecanvas';
 import Recipe_Card from './recipies-card';
-import Slide from '@mui/material/Slide';
+import Grow from '@mui/material/Grow';
+
 import Recipe_Detail from './recipie-detail';
 import { deleteRequest, getRequest, postRequest } from '../../services/database.service';
 import Recipe_Favor_List from './recipe-favor-list';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 class Recipes extends React.Component {
     constructor(props) {
@@ -16,13 +19,18 @@ class Recipes extends React.Component {
             favoriteRecipe_arr: [],
         }
         this.myRef = React.createRef();
+        this.eachPageCount = 4;
     }
+
     handleCanvasShow = () => {
         this.setState({ canvasIsShow: true });
     }
     handleCanvasClose = () => {
         this.setState({ canvasIsShow: false });
     }
+
+
+    //left arrow, right arrow, and pagniation
     handleMoveleft = () => {
         this.setState((preState) => {
             const newIndex = preState.firstIndex === 0 ? 0 : preState.firstIndex - 1;
@@ -35,6 +43,12 @@ class Recipes extends React.Component {
             return { firstIndex: newIndex }
         });
     }
+    handlePageJump = (event, index) => {
+        this.setState({ firstIndex: (index - 1) * this.eachPageCount });
+    }
+
+
+
     viewDetail = (index) => {
         console.log(this.props.queryData);
         this.setState({ subSectionChoice: 1, selectedIndex: index });
@@ -65,6 +79,7 @@ class Recipes extends React.Component {
     }
 
 
+
     getUserFavoriteRecipes = () => {
         getRequest("/getAllFavoriteRecipes").then((return_data) => {
             console.log("return_data:", return_data);
@@ -77,8 +92,8 @@ class Recipes extends React.Component {
         });
     }
 
-    goToMyFavoriteList = ()=>{
-        this.setState({subSectionChoice:2});
+    goToMyFavoriteList = () => {
+        this.setState({ subSectionChoice: 2 });
     }
 
 
@@ -98,15 +113,28 @@ class Recipes extends React.Component {
     }
 
     render() {
-        const all_recipes_cards = this.props.queryData?.filter((item) => {
-            return (this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)
-        })?.map((item) =>
-            <Slide key={item.id} direction="up"
+        /*
+        <Slide key={item.id} direction="up"
                 in={(this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)}
                 out={(this.state.firstIndex > item.index) || (item.index >= this.state.firstIndex + 4)}
                 container={this.myRef.current}>
                 <div><Recipe_Card favor={this.state.favoriteRecipe_arr.includes(item['id'])} data={item} viewDetail={this.viewDetail} toggleFavorite={this.toggleFavorite} /></div>
             </Slide>
+        */
+
+        const totalPageNumber = Math.ceil(this.props.queryData.length / this.eachPageCount);
+
+        const all_recipes_cards = this.props.queryData?.filter((item) => {
+            return (this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)
+        })?.map((item,index) =>
+                <Grow key={item.id}
+                    in={(this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)}
+                    style={{ transformOrigin: '0 0 0' }}
+                    {...((this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4) ? { timeout: 300+1250* index } : {})}
+                >
+                    <div><Recipe_Card favor={this.state.favoriteRecipe_arr.includes(item['id'])} data={item} viewDetail={this.viewDetail} toggleFavorite={this.toggleFavorite} /></div>
+                </Grow>
+
         );
         /*
         const all_recipes_cards = this.state.recipes_arr?.filter( (item)=>{
@@ -136,12 +164,21 @@ class Recipes extends React.Component {
                 recipe_selection = <></>;
                 break;
         }
-        
+
         return (
-            <section className='recipes_container' ref={this.myRef}>
+            <section className='main-section'>
                 <button className='offcanvas_button' onClick={this.handleCanvasShow}></button>
-                {recipe_selection}
-                <Side_Canvas handleCanvasClose={this.handleCanvasClose} goToMyFavoriteList={this.goToMyFavoriteList} canvasIsShow={this.state.canvasIsShow} />
+                { this.state.subSectionChoice !== 0 && <button className="return-btn" onClick={this.returnToHome}></button>}
+                <section className='recipes_container' ref={this.myRef}>
+                    {recipe_selection}
+                    <Side_Canvas handleCanvasClose={this.handleCanvasClose} goToMyFavoriteList={this.goToMyFavoriteList} canvasIsShow={this.state.canvasIsShow} />
+                </section>
+                {this.state.subSectionChoice === 0 && <section className='pagination'>
+                    <Stack spacing={2}>
+                        <Pagination count={totalPageNumber} color="secondary" onChange={this.handlePageJump} page={Math.floor(this.state.firstIndex / this.eachPageCount) + 1} />
+                    </Stack>
+                </section>
+                }
             </section>
         )
     }
