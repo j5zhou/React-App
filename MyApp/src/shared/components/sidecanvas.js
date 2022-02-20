@@ -1,5 +1,6 @@
 import React from "react";
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { getRequest } from "../../services/database.service";
 
 
 class Side_Canvas extends React.Component {
@@ -13,6 +14,15 @@ class Side_Canvas extends React.Component {
         this.handleClose();
         this.props.goToMyFavoriteList();
     }
+    handleLogout = ()=>{
+        getRequest("/logout").then((return_data) => {
+          if (return_data.status === 200) {
+              window.location.href="/login";
+          } else {
+              alert("could not logout");
+          }
+      });
+    }
 
     render() {
       const email = window.sessionStorage.getItem("email");
@@ -24,6 +34,9 @@ class Side_Canvas extends React.Component {
         <Offcanvas.Body className="off-canvas-body">
               <div>
                   <button className="off-canvas-btn" onClick={this.goToMyFavoriteList}>My Favorite Recipes List</button>
+              </div>
+              <div className="off-canvas-logout">
+                  <button className="off-canvas-btn" onClick={this.handleLogout}>Logout</button>
               </div>
         </Offcanvas.Body>
       </Offcanvas>

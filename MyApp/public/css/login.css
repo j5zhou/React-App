@@ -19,3 +19,6 @@ input.form-control,button.btn.btn-outline-secondary,button.btn.btn-outline-prima
     text-align: center;
     color: var(--color-primay);
 }
+main{
+    height: calc(100% - var(--footer-size) - var(--header-size));
+}

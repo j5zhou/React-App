@@ -9,7 +9,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 app.use(session({ secret: 'Shh, its a secret!',cookie : {
-  sameSite: 'strict',
+  sameSite: 'strict',secure: true
 } }));
 
 // dealt with fetch post json data.
@@ -38,6 +38,12 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/login.html'));
 });
+
+app.get('/logout', (req, res) => {
+    req.session.uid = undefined;
+    res.status(200).send({status:200});
+});
+
 
 app.post('/signup', (req, res) => {
   const data = req.body;

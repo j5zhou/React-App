@@ -10,9 +10,15 @@ const QueryContext = React.createContext({});
 class Home extends React.Component{
     constructor(props){
         super(props);
-        this.state={query:"",options:{selectedCuisine:"All"},data:[]}
+        this.state={query:"",options:{selectedCuisine:"All"},data:[],selectionState:0};
         this.allTypesRecipes = ["American","Asian","Chinese","Japanese","French","Mexican","Indian"];
     }
+
+
+    changeSelectionState = (index)=>{
+        this.setState({selectionState:index});
+    }
+
     changeQuery = (obj)=>{
         this.setState({...obj});
         this.getAllRecipes(obj);
@@ -24,6 +30,7 @@ class Home extends React.Component{
             recipes_api.getAllRecipes(obj.query,"").then((data) =>{
                 console.log(data);
                 this.setState({data:data.hits.map((item,index)=>new Recipe_data(item.recipe,index))});
+                this.changeSelectionState(0);
         });
             
         }else if(obj.query){
@@ -32,6 +39,7 @@ class Home extends React.Component{
             recipes_api.getAllRecipes(obj.query,options).then((data) =>{
                 console.log(data);
                 this.setState({data:data.hits.map((item,index)=>new Recipe_data(item.recipe,index))});
+                this.changeSelectionState(0);
             });
         }
     }
@@ -45,6 +53,7 @@ class Home extends React.Component{
             recipes_api.getAllRecipes(q,options).then((data) =>{
                 console.log(data);
                 this.setState({data:data.hits.map((item,index)=>new Recipe_data(item.recipe,index))});
+                this.changeSelectionState(0);
         });
     }
     getTypeRandomRecipes=(recipe_type)=>{
@@ -53,10 +62,9 @@ class Home extends React.Component{
             recipes_api.getAllRecipes(q,options).then((data) =>{
                 console.log(data);
                 this.setState({data:data.hits.map((item,index)=>new Recipe_data(item.recipe,index))});
+                this.changeSelectionState(0);
         });
     }
-
-
 
 
     componentDidMount = ()=>{
@@ -68,7 +76,7 @@ class Home extends React.Component{
             <>
             <Home_header changeQuery={this.changeQuery} getTypeRandomRecipes={this.getTypeRandomRecipes}/>
             <main>
-                <Recipes queryData={this.state.data}/>
+                <Recipes queryData={this.state.data} changeSelectionState={this.changeSelectionState} selectionState={this.state.selectionState}  />
             </main>
             <Home_footer/>
 

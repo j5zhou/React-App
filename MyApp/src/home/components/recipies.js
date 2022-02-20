@@ -51,11 +51,14 @@ class Recipes extends React.Component {
 
     viewDetail = (index) => {
         console.log(this.props.queryData);
-        this.setState({ subSectionChoice: 1, selectedIndex: index });
+        //this.setState({ subSectionChoice: 1, selectedIndex: index });
+        this.setState({selectedIndex: index });
+        this.props.changeSelectionState(1);
     }
     returnToHome = () => {
         this.getUserFavoriteRecipes();
-        this.setState({ subSectionChoice: 0 });
+        //this.setState({ subSectionChoice: 0 });
+        this.props.changeSelectionState(0);
     }
 
     addToFavorite = (data) => {
@@ -93,9 +96,9 @@ class Recipes extends React.Component {
     }
 
     goToMyFavoriteList = () => {
-        this.setState({ subSectionChoice: 2 });
+        //this.setState({ subSectionChoice: 2 });
+        this.props.changeSelectionState(2);
     }
-
 
     toggleFavorite = (index) => {
         //get the id first and use the id to identify if it is in favorite or not
@@ -145,7 +148,7 @@ class Recipes extends React.Component {
         */
 
         let recipe_selection;
-        switch (this.state.subSectionChoice) {
+        switch (this.props.selectionState) {
             case 0:
                 recipe_selection =
                     <>
@@ -168,12 +171,12 @@ class Recipes extends React.Component {
         return (
             <section className='main-section'>
                 <button className='offcanvas_button' onClick={this.handleCanvasShow}></button>
-                { this.state.subSectionChoice !== 0 && <button className="return-btn" onClick={this.returnToHome}></button>}
+                { this.props.selectionState !== 0 && <button className="return-btn" onClick={this.returnToHome}></button>}
                 <section className='recipes_container' ref={this.myRef}>
                     {recipe_selection}
                     <Side_Canvas handleCanvasClose={this.handleCanvasClose} goToMyFavoriteList={this.goToMyFavoriteList} canvasIsShow={this.state.canvasIsShow} />
                 </section>
-                {this.state.subSectionChoice === 0 && <section className='pagination'>
+                {this.props.selectionState === 0 && <section className='pagination'>
                     <Stack spacing={2}>
                         <Pagination count={totalPageNumber} color="secondary" onChange={this.handlePageJump} page={Math.floor(this.state.firstIndex / this.eachPageCount) + 1} />
                     </Stack>

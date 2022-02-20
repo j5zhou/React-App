@@ -52,12 +52,6 @@ html{
     line-height: var(--footer-header-size);
     background: linear-gradient(140deg,#033e63,#9c9ff7,#33333b);
 }
-main{
-    min-height: calc(100% - var(--footer-header-size) - var(--home-header-minsize));
-}
-.main-section{
-    position: relative;
-}
 .center-container{
     height: 100%;
     display: flex;
@@ -94,6 +88,11 @@ main{
     background-color: inherit;
     border: 1px solid #ffffff;
     border-radius: 8px;
+    width: 160px;
+}
+.off-canvas-logout{
+    position: absolute;
+    bottom: 10px;
 }
 
 .label-text{
