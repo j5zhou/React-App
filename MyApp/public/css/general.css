@@ -5,6 +5,7 @@
     --footer-header-size:8rem;
     --color-primay:#064c88;
     --color-white:#e9e7e6;
+    --color-black:#212121;
 }
 *{
     padding: 0px;
@@ -89,4 +90,9 @@ main{
     background-color: inherit;
     border: 1px solid #ffffff;
     border-radius: 8px;
+}
+
+.label-text{
+    font-size: 2rem;
+    padding: 5px;
 }

@@ -9,6 +9,10 @@ class Side_Canvas extends React.Component {
     handleClose = ()=>{
         this.props.handleCanvasClose();
     }
+    goToMyFavoriteList = ()=>{
+        this.handleClose();
+        this.props.goToMyFavoriteList();
+    }
 
     render() {
       const email = window.sessionStorage.getItem("email");
@@ -19,7 +23,7 @@ class Side_Canvas extends React.Component {
         </Offcanvas.Header>
         <Offcanvas.Body className="off-canvas-body">
               <div>
-                  <button className="off-canvas-btn">My Favorite Recipes List</button>
+                  <button className="off-canvas-btn" onClick={this.goToMyFavoriteList}>My Favorite Recipes List</button>
               </div>
         </Offcanvas.Body>
       </Offcanvas>

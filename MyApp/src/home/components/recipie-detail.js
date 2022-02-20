@@ -6,17 +6,17 @@ class Recipe_Detail extends React.Component {
     constructor(props) {
         super(props);
     }
-    returnFromDetail = ()=>{
+    returnFromDetail = () => {
         this.props.returnToHome();
     }
 
-    toggleFavorite = ()=>{
+    toggleFavorite = () => {
         this.props.toggleFavorite(this.props.data.index);
     }
 
     render() {
-        const colorType = this.props.favor ? "error": "inherit";
-        const {label,image,calories,cuisineType,ingredients,totalTime} = this.props.data;
+        const colorType = this.props.favor ? "error" : "inherit";
+        const { label, image, calories, cuisineType, ingredients, totalTime } = this.props.data;
         return (
             <section className="recipe_detail">
                 <h2 className="recipe_detail_label">{label}
@@ -28,26 +28,26 @@ class Recipe_Detail extends React.Component {
                 <section className="recipe_detail_content">
                     <section className="recipe_detail_content-left">
                         <div>
-                        <picture>
-                            <source media="(min-width:650px)" srcset={image}/>
-                            <img src={image} alt={label}/>
-                        </picture>    
+                            <picture>
+                                <source media="(min-width:650px)" srcset={image} />
+                                <img src={image} alt={label} />
+                            </picture>
                         </div>
                         <div>
-                            <label>Cuisine Type:</label>
-                            <label>{cuisineType.map((item)=> <label key={item}>{item}</label>)}</label>
+                            <label className="label-text">Cuisine Type:</label>
+                            {cuisineType.map((item) => <label className="label-text" key={item}>{item}</label>)}
                         </div>
                         <div>
-                            <label>Ingredients:</label>
-                            <label>{ingredients.map((item)=> <label key={item}>{item}</label>)}</label>
+                            <label className="label-text">Calories:</label><label className="label-text">{parseInt(calories)}</label>
+                        </div>
+                        <div>
+                            <label className="label-text">Total Cooked Time:</label ><label className="label-text">{totalTime} Min</label>
                         </div>
                     </section>
                     <section className="recipe_detail_content-right">
                         <div>
-                            <label>Calories:</label><label>{calories}</label>
-                        </div>
-                        <div>
-                            <label>Total Cooked Time:</label><label>{totalTime}</label>
+                            <label className="label-text">Ingredients:</label>
+                            {ingredients.map((item) => <div className="label-text" key={item}>{item}</div>)}
                         </div>
                     </section>
                 </section>

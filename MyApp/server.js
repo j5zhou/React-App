@@ -8,7 +8,9 @@ const port = 3000
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
-app.use(session({ secret: 'Shh, its a secret!' }));
+app.use(session({ secret: 'Shh, its a secret!',cookie : {
+  sameSite: 'strict',
+} }));
 
 // dealt with fetch post json data.
 const bodyParser = require('body-parser');

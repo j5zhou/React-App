@@ -12,94 +12,8 @@ class Recipes extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            recipes_arr: [new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_b79327d05b8e5b838ad6cfd9576b30b6",
-                yield: 4
-            }, 0), new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_b79327d05b8e5b838a4cfd9576b30b6",
-                yield: 4
-            }, 1), new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_b79327d05b8e5b338ad6cfd9576b30b6",
-                yield: 4
-            }, 2), new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_b79327d05b86b838ad6cfd9576b30b6",
-                yield: 4
-            }, 3),
-            new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_b79327d06Ab8e5b838ad6cfd9576b30b6",
-                yield: 4
-            }, 4), new Recipe_data({
-                calories: 4228.043058200812,
-                cautions: ['Sulfites'],
-                cuisineType: ['italian'],
-                dietLabels: ['Low-Carb'],
-                dishType: ['main course'],
-                image: "https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg",
-                ingredients: ['ss'],
-                label: "Chicken Vesuvio",
-                mealType: ['lunch/dinner'],
-                totalTime: 60,
-                totalWeight: 2976.8664549004047,
-                uri: "http://www.edamam.com/ontologies/edamam.owl#recipe_bQ9327d05b8e5b838ad6cfd9576b30b6",
-                yield: 4
-            }, 5)],
             canvasIsShow: false, firstIndex: 0, subSectionChoice: 0, selectedIndex: 0,
-            favoriteRecipe_arr: []
+            favoriteRecipe_arr: [],
         }
         this.myRef = React.createRef();
     }
@@ -111,20 +25,22 @@ class Recipes extends React.Component {
     }
     handleMoveleft = () => {
         this.setState((preState) => {
-            const newIndex = preState.firstIndex + 1 === preState.recipes_arr.length ? 0 : preState.firstIndex + 1;
+            const newIndex = preState.firstIndex === 0 ? 0 : preState.firstIndex - 1;
             return { firstIndex: newIndex }
         });
     }
     handleMoveright = () => {
         this.setState((preState) => {
-            const newIndex = preState.firstIndex === 0 ? 0 : preState.firstIndex - 1;
+            const newIndex = preState.firstIndex + 1 === this.props.queryData.length ? 0 : preState.firstIndex + 1;
             return { firstIndex: newIndex }
         });
     }
     viewDetail = (index) => {
+        console.log(this.props.queryData);
         this.setState({ subSectionChoice: 1, selectedIndex: index });
     }
     returnToHome = () => {
+        this.getUserFavoriteRecipes();
         this.setState({ subSectionChoice: 0 });
     }
 
@@ -168,7 +84,7 @@ class Recipes extends React.Component {
 
     toggleFavorite = (index) => {
         //get the id first and use the id to identify if it is in favorite or not
-        const id = this.state.recipes_arr[index].id;
+        const id = this.props.queryData[index].id;
         //if it is already favorite, then cancel it
         //if it is not in favorite, then add to favorite.
 
@@ -177,14 +93,14 @@ class Recipes extends React.Component {
             this.removeFromFavorite(id);
         } else {
             //add to favorite
-            this.addToFavorite(this.state.recipes_arr[index]);
+            this.addToFavorite(this.props.queryData[index]);
         }
     }
 
     render() {
-        const all_recipes_cards = this.state.recipes_arr?.filter((item) => {
+        const all_recipes_cards = this.props.queryData?.filter((item) => {
             return (this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)
-        }).map((item) =>
+        })?.map((item) =>
             <Slide key={item.id} direction="up"
                 in={(this.state.firstIndex <= item.index) && (item.index < this.state.firstIndex + 4)}
                 out={(this.state.firstIndex > item.index) || (item.index >= this.state.firstIndex + 4)}
@@ -211,7 +127,7 @@ class Recipes extends React.Component {
                     </>
                 break;
             case 1:
-                recipe_selection = <Recipe_Detail toggleFavorite={this.toggleFavorite} favor={this.state.favoriteRecipe_arr.includes(this.state.recipes_arr[this.state.selectedIndex]["id"])} data={this.state.recipes_arr[this.state.selectedIndex]} returnToHome={this.returnToHome} />
+                recipe_selection = <Recipe_Detail toggleFavorite={this.toggleFavorite} favor={this.state.favoriteRecipe_arr.includes(this.props.queryData[this.state.selectedIndex]["id"])} data={this.props.queryData[this.state.selectedIndex]} returnToHome={this.returnToHome} />
                 break;
             case 2:
                 recipe_selection = <Recipe_Favor_List returnToHome={this.returnToHome} />;
@@ -220,26 +136,17 @@ class Recipes extends React.Component {
                 recipe_selection = <></>;
                 break;
         }
+        
         return (
             <section className='recipes_container' ref={this.myRef}>
                 <button className='offcanvas_button' onClick={this.handleCanvasShow}></button>
                 {recipe_selection}
-                <Side_Canvas handleCanvasClose={this.handleCanvasClose} canvasIsShow={this.state.canvasIsShow} />
+                <Side_Canvas handleCanvasClose={this.handleCanvasClose} goToMyFavoriteList={this.goToMyFavoriteList} canvasIsShow={this.state.canvasIsShow} />
             </section>
         )
     }
     componentDidMount() {
-        this.getAllRecipes();
         this.getUserFavoriteRecipes();
-    }
-    getAllRecipes() {
-        /*
-        recipes_api.getAllRecipes("chicken").
-        then((data) =>{
-            //console.log(data);
-            this.setState({recipes_arr:data.hits.map((item)=>new Recipe_data(item.recipe))});
-        });
-        */
     }
 }
 

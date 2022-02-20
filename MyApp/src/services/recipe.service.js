@@ -3,7 +3,7 @@ const baseurl = "https://api.edamam.com/api/recipes/v2?type=public";
 const app_id = "7370e191";
 const app_key = "716121d129917432548b8ef341e843b7";
 const getAllRecipes = (query,options)=>
-    fetch(`${baseurl}&q=${query}&app_id=${app_id}&app_key=${app_key}`,{
+    fetch(`${baseurl}&q=${query}&app_id=${app_id}&app_key=${app_key}${options}`,{
         credentials: 'include',
         method: "GET",
         headers: {

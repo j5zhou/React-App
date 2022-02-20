@@ -22,10 +22,9 @@ class Recipe_Card extends React.Component {
             <Card className="recipe_card" >
                 <Card.Img variant="top" className="recipe_card_img" srcSet={this.props.data['image']} />
                 <Card.Body>
-                    <Card.Title>{this.props.data['label']}</Card.Title>
+                    <Card.Title className="label-text recipe-card-title">{this.props.data['label']}</Card.Title>
                     <Card.Text>
-                        Some quick example text to build on the card title and make up the bulk of
-                        the card's content.
+                        {this.props.data['cuisineType'].map((item) => <label className="label-text" key={item}>{item}</label>)}
                     </Card.Text>
                     <div className="flex-container">
                     <Button variant="primary" onClick={this.showDetail}>View Detail</Button>

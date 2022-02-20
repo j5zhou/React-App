@@ -7,15 +7,15 @@ class Home_header extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            subitems:['French Cuisine','Mexican Cuisine','Japanese Cuisine','Chinese Cuisine','Thai Cuisine']
+            subitems:['French Cuisine','Mexican Cuisine','Japanese Cuisine','Chinese Cuisine','American Cuisine']
         }
     }
     render(){
         return(
             <header className = 'home_header'>
                 <Home_header_nav />
-                <Home_header_subnav items={this.state.subitems}/>
-                <Searchbar items={this.state.subitems}/>
+                <Home_header_subnav getTypeRandomRecipes={this.props.getTypeRandomRecipes} items={this.state.subitems}/>
+                <Searchbar changeQuery={this.props.changeQuery} items={this.state.subitems}/>
             </header>
         )
     }

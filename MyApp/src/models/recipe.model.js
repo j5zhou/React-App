@@ -4,7 +4,7 @@ class Recipe_data{
         this.image=data['image'];
         this.calories=data['calories'];
         this.cuisineType=data['cuisineType'];
-        this.ingredients=data['ingredients'];
+        this.ingredients=data['ingredientLines'];
         this.totalTime=data['totalTime'];
         this.label=data['label'];
         this.index= index;
