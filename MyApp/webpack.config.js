@@ -1,5 +1,5 @@
 const path = require('path');
-const nodeExternals =require("webpack-node-externals");
+const nodeExternals = require('webpack-node-externals');
 
 /*
 const serverConfig = {
@@ -31,9 +31,12 @@ const serverConfig = {
 */
 const clientConfig = {
   entry: {
-    home: './src/home/home.js',
-    login: './src/login/login.js'
+    home: './src/home/index.js',
+    login: './src/login/login.js',
+    server: "./server.js"
   },
+  target: 'node',
+  externals: [nodeExternals()],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'public/js'),
@@ -41,15 +44,13 @@ const clientConfig = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env','@babel/preset-react']
-          }
-        }
-      }
+        test: /\.js$/,
+        use: 'babel-loader'
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   }
 };

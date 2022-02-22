@@ -1,6 +1,11 @@
-const express = require('express');
-const path = require('path');
-const db_api = require('./database');
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import db_api from "./database";
+import Home from './src/home/home';
+
 const app = express()
 const port = 3000
 
@@ -18,10 +23,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //dealt with static file
-app.use('/static/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/static/css', express.static(path.join(__dirname, 'public/css')));
-app.use('/static/html', express.static(path.join(__dirname, 'public/html')));
-app.use('/static/images', express.static(path.join(__dirname, 'public/images')));
+app.use('static/js', express.static(path.join(__dirname, 'public/js')));
+app.use('static/css', express.static(path.join(__dirname, 'public/css')));
+app.use('static/html', express.static(path.join(__dirname, 'public/html')));
+app.use('static/images', express.static(path.join(__dirname, 'public/images')));
 
 //dealth with request.
 app.get('/', (req, res) => {
@@ -33,10 +38,23 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/login.html'));
   }
   */
-  res.sendFile(path.join(__dirname, 'public/html/index.html'));
+  //res.sendFile(path.join(__dirname, 'public/html/index.html'));
+
+  //serverside rendering addional code:
+  const app = ReactDOMServer.renderToString(<Home />);
+  const indexFile = path.resolve('./public/html/index.html');
+  fs.readFile(indexFile, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Something went wrong:', err);
+      return res.status(500).send('Oops, better luck next time!');
+    }
+    return res.send(
+      data.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
+    );
+  });
 });
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/html/login.html'));
+  res.sendFile(path.join(__dirname, '../../public/html/login.html'));
 });
 
 app.get('/logout', (req, res) => {

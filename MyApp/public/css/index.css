@@ -48,7 +48,7 @@
     position: absolute;
     width: 5rem;
     height: 5rem;
-    background-image: url("/static/images/hamburger.png");
+    background-image: url("../images/hamburger.png");
     left: 3px;
     background-size: cover;
     border: none;
@@ -65,15 +65,15 @@
 }
 .leftarrow_button{
     left: 3px;
-    background-image: url("/static/images/left-arrow.png");
+    background-image: url("../images/left-arrow.png");
 }
 .rightarrow_button{
     right: 3px;
-    background-image: url("/static/images/right-arrow.png");
+    background-image: url("../images/right-arrow.png");
 }
 .return-btn{
     right: 3px;
-    background-image: url("/static/images/return-btn.jpg");
+    background-image: url("../images/return-btn.jpg");
 }
 .recipe_detail{
     height: 100%;

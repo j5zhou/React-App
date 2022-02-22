@@ -131,4 +131,4 @@ const db_api={
 }
 
 
-module.exports= db_api;
+export default db_api;

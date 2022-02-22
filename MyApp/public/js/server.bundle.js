@@ -10,6 +10,26 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./database.js":
+/*!*********************!*\
+  !*** ./database.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar _require = __webpack_require__(/*! @mui/utils */ \"@mui/utils\"),\n    integerPropType = _require.integerPropType;\n\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\n\nvar DATABASE_URL = \"mongodb://localhost:27017/myapp\";\nvar UserSchema = new mongoose.Schema({\n  email: String,\n  password: String\n});\n\nvar createAccount = function createAccount(data, cb) {\n  //craete connections\n  var conn = mongoose.createConnection(DATABASE_URL);\n  var Users = conn.model('User', UserSchema);\n  conn.on('error', console.error.bind(console, 'connection error:'));\n  conn.once('open', function () {\n    var newUser = new Users(data); //Find if there is any exist username\n\n    Users.find({\n      email: data['email']\n    }, function (err, result) {\n      if (err) return console.error(err);\n\n      if (result.length > 0) {\n        console.log('User already exist');\n        conn.close();\n        cb({\n          status: 400,\n          message: \"User already exist\"\n        });\n      } else {\n        newUser.save(function (err, result) {\n          if (err) return console.error(err);\n          console.log('User signup successfully');\n          conn.close();\n          cb({\n            status: 201,\n            data: result\n          });\n        });\n      }\n    });\n  });\n};\n\nvar login = function login(data, cb) {\n  //craete connections\n  var conn = mongoose.createConnection(DATABASE_URL);\n  var Users = conn.model('User', UserSchema);\n  conn.on('error', console.error.bind(console, 'connection error:'));\n  conn.once('open', function () {\n    //Find if there is any exist username\n    Users.find(data, function (err, result) {\n      if (err) return console.error(err);\n\n      if (result.length > 0) {\n        console.log('User Login sucessfully');\n        conn.close();\n        cb({\n          status: 200,\n          data: result\n        });\n      } else {\n        console.log('User Does not exists');\n        conn.close();\n        cb({\n          status: 400,\n          message: \"User Does not exist\"\n        });\n      }\n    });\n  });\n};\n\nvar RecipeSchema = new mongoose.Schema({\n  id: String,\n  image: String,\n  calories: Number,\n  cuisineType: Array,\n  ingredients: Array,\n  totalTime: Number,\n  label: String,\n  uid: String\n});\n\nvar addRecipeToFavorite = function addRecipeToFavorite(data, cb) {\n  //craete connections\n  var conn = mongoose.createConnection(DATABASE_URL);\n  var Recipe = conn.model('Recipe', RecipeSchema);\n  conn.on('error', console.error.bind(console, 'connection error:'));\n  conn.once('open', function () {\n    var newRecipe = new Recipe(data); //Find if there is any exist username\n\n    Recipe.find({\n      id: data['id'],\n      uid: data['uid']\n    }, function (err, result) {\n      if (err) return console.error(err);\n\n      if (result.length > 0) {\n        console.log('User already add this recipe to favorite');\n        conn.close();\n        cb({\n          status: 400,\n          message: \"User already add this recipe to favorite\"\n        });\n      } else {\n        newRecipe.save(function (err, result) {\n          if (err) return console.error(err);\n          console.log('User add this recipe to favorite successfully');\n          conn.close();\n          cb({\n            status: 201,\n            data: result\n          });\n        });\n      }\n    });\n  });\n};\n\nvar removeRecipeFromFavorite = function removeRecipeFromFavorite(data, cb) {\n  //craete connections\n  var conn = mongoose.createConnection(DATABASE_URL);\n  var Recipe = conn.model('Recipe', RecipeSchema);\n  conn.on('error', console.error.bind(console, 'connection error:'));\n  conn.once('open', function () {\n    //Find if there is any exist username\n    Recipe.deleteOne({\n      id: data['id'],\n      uid: data['uid']\n    }, function (err, result) {\n      if (err) return console.error(err);\n      console.log('User remove this recipe from favorite successfully');\n      conn.close();\n      cb({\n        status: 201,\n        data: result\n      });\n    });\n  });\n};\n\nvar getAllFavoriteRecipes = function getAllFavoriteRecipes(uid, cb) {\n  //craete connections\n  var conn = mongoose.createConnection(DATABASE_URL);\n  var Recipe = conn.model('Recipe', RecipeSchema);\n  conn.on('error', console.error.bind(console, 'connection error:'));\n  conn.once('open', function () {\n    //Find if there is any exist username\n    Recipe.find({\n      uid: uid\n    }, function (err, result) {\n      if (err) return console.error(err);\n      conn.close();\n      cb({\n        status: 200,\n        data: result\n      });\n    });\n  });\n};\n\nvar db_api = {\n  createAccount: createAccount,\n  login: login,\n  addRecipeToFavorite: addRecipeToFavorite,\n  removeRecipeFromFavorite: removeRecipeFromFavorite,\n  getAllFavoriteRecipes: getAllFavoriteRecipes\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (db_api);\n\n//# sourceURL=webpack://myapp/./database.js?");
+
+/***/ }),
+
+/***/ "./server.js":
+/*!*******************!*\
+  !*** ./server.js ***!
+  \*******************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom/server */ \"react-dom/server\");\n/* harmony import */ var react_dom_server__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_dom_server__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _database__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./database */ \"./database.js\");\n/* harmony import */ var _src_home_home__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/home/home */ \"./src/home/home.js\");\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\n\n\n\n\nvar app = express__WEBPACK_IMPORTED_MODULE_0___default()();\nvar port = 3000; //session and cookies\n\nvar session = __webpack_require__(/*! express-session */ \"express-session\");\n\nvar cookieParser = __webpack_require__(/*! cookie-parser */ \"cookie-parser\");\n\napp.use(cookieParser());\napp.use(session({\n  secret: 'Shh, its a secret!',\n  cookie: {\n    sameSite: 'strict',\n    secure: true\n  }\n})); // dealt with fetch post json data.\n\nvar bodyParser = __webpack_require__(/*! body-parser */ \"body-parser\");\n\napp.use(bodyParser.json());\napp.use(bodyParser.urlencoded({\n  extended: true\n})); //dealt with static file\n\napp.use('static/js', express__WEBPACK_IMPORTED_MODULE_0___default()[\"static\"](path__WEBPACK_IMPORTED_MODULE_1___default().join(__dirname, 'public/js')));\napp.use('static/css', express__WEBPACK_IMPORTED_MODULE_0___default()[\"static\"](path__WEBPACK_IMPORTED_MODULE_1___default().join(__dirname, 'public/css')));\napp.use('static/html', express__WEBPACK_IMPORTED_MODULE_0___default()[\"static\"](path__WEBPACK_IMPORTED_MODULE_1___default().join(__dirname, 'public/html')));\napp.use('static/images', express__WEBPACK_IMPORTED_MODULE_0___default()[\"static\"](path__WEBPACK_IMPORTED_MODULE_1___default().join(__dirname, 'public/images'))); //dealth with request.\n\napp.get('/', function (req, res) {\n  req.session.uid = \"620de9b812aed67ee214d22a\";\n  /*\r\n  if(req.session.uid){\r\n    res.sendFile(path.join(__dirname, 'public/html/index.html'));\r\n  }else{\r\n    res.sendFile(path.join(__dirname, 'public/html/login.html'));\r\n  }\r\n  */\n  //res.sendFile(path.join(__dirname, 'public/html/index.html'));\n  //serverside rendering addional code:\n\n  var app = react_dom_server__WEBPACK_IMPORTED_MODULE_4___default().renderToString( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_src_home_home__WEBPACK_IMPORTED_MODULE_6__[\"default\"], null));\n  var indexFile = path__WEBPACK_IMPORTED_MODULE_1___default().resolve('./public/html/index.html');\n  fs__WEBPACK_IMPORTED_MODULE_2___default().readFile(indexFile, 'utf8', function (err, data) {\n    if (err) {\n      console.error('Something went wrong:', err);\n      return res.status(500).send('Oops, better luck next time!');\n    }\n\n    return res.send(data.replace('<div id=\"root\"></div>', \"<div id=\\\"root\\\">\".concat(app, \"</div>\")));\n  });\n});\napp.get('/login', function (req, res) {\n  res.sendFile(path__WEBPACK_IMPORTED_MODULE_1___default().join(__dirname, '../../public/html/login.html'));\n});\napp.get('/logout', function (req, res) {\n  req.session.uid = undefined;\n  res.status(200).send({\n    status: 200\n  });\n});\napp.post('/signup', function (req, res) {\n  var data = req.body;\n  _database__WEBPACK_IMPORTED_MODULE_5__[\"default\"].createAccount(data, function (resove_data) {\n    console.log(\"resove_data:\", resove_data);\n\n    if (resove_data.status === 201) {\n      req.session.uid = resove_data.data[0]['_id'].toString();\n      res.status(201).send(resove_data);\n    } else if (resove_data.status === 400) {\n      res.status(400).send({\n        status: 400,\n        error: resove_data.message\n      });\n    }\n  });\n});\napp.post('/userlogin', function (req, res) {\n  var data = req.body;\n  console.log(\"userlogin:\", data);\n  _database__WEBPACK_IMPORTED_MODULE_5__[\"default\"].login(data, function (resove_data) {\n    console.log(\"resove_data:\", resove_data);\n\n    if (resove_data.status === 200) {\n      req.session.uid = resove_data.data[0]['_id'].toString();\n      res.status(200).send(resove_data);\n    } else if (resove_data.status === 400) {\n      res.status(400).send({\n        status: 400,\n        error: resove_data.message\n      });\n    }\n  });\n});\napp.post('/addRecipeToFavorite', function (req, res) {\n  var data = req.body;\n  console.log(\"user like this recipe:\");\n  _database__WEBPACK_IMPORTED_MODULE_5__[\"default\"].addRecipeToFavorite(_objectSpread(_objectSpread({}, data), {}, {\n    uid: req.session.uid\n  }), function (resove_data) {\n    console.log(\"resove_data:\", resove_data);\n\n    if (resove_data.status === 201) {\n      res.status(201).send(resove_data);\n    } else if (resove_data.status === 400) {\n      res.status(400).send({\n        status: 400,\n        error: resove_data.message\n      });\n    }\n  });\n});\nvar deleteRecipeUri = /^\\/removeRecipeFromFavorite\\/[\\w]+/;\napp[\"delete\"](deleteRecipeUri, function (req, res) {\n  var id = req.url.substring(req.url.lastIndexOf(\"/\") + 1);\n  _database__WEBPACK_IMPORTED_MODULE_5__[\"default\"].removeRecipeFromFavorite({\n    id: id,\n    uid: req.session.uid\n  }, function (resove_data) {\n    console.log(\"resove_data:\", resove_data);\n\n    if (resove_data.status === 201) {\n      res.status(201).send(resove_data);\n    } else if (resove_data.status === 400) {\n      res.status(400).send({\n        status: 400,\n        error: resove_data.message\n      });\n    }\n  });\n});\napp.get('/getAllFavoriteRecipes', function (req, res) {\n  console.log(\"user want to get all his favorite recipe:\");\n  _database__WEBPACK_IMPORTED_MODULE_5__[\"default\"].getAllFavoriteRecipes(req.session.uid, function (resove_data) {\n    res.status(200).send(resove_data);\n  });\n});\napp.listen(port, function () {\n  console.log(\"Example app listening on port \".concat(port));\n});\n\n//# sourceURL=webpack://myapp/./server.js?");
+
+/***/ }),
+
 /***/ "./src/home/components/recipe-favor-list.js":
 /*!**************************************************!*\
   !*** ./src/home/components/recipe-favor-list.js ***!
@@ -57,16 +77,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _shared_components_home_footer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/components/home-footer */ \"./src/shared/components/home-footer.js\");\n/* harmony import */ var _shared_components_home_header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/components/home-header */ \"./src/shared/components/home-header.js\");\n/* harmony import */ var _components_recipies__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/recipies */ \"./src/home/components/recipies.js\");\n/* harmony import */ var _models_recipe_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../models/recipe.model */ \"./src/models/recipe.model.js\");\n/* harmony import */ var _services_recipe_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/recipe.service */ \"./src/services/recipe.service.js\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && \"function\" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }, _typeof(obj); }\n\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, \"prototype\", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } else if (call !== void 0) { throw new TypeError(\"Derived constructors may only return object or undefined\"); } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\n\n\n\n\nvar Home = /*#__PURE__*/function (_React$Component) {\n  _inherits(Home, _React$Component);\n\n  var _super = _createSuper(Home);\n\n  function Home(props) {\n    var _this;\n\n    _classCallCheck(this, Home);\n\n    _this = _super.call(this, props);\n\n    _defineProperty(_assertThisInitialized(_this), \"changeSelectionState\", function (index) {\n      _this.setState({\n        selectionState: index\n      });\n    });\n\n    _defineProperty(_assertThisInitialized(_this), \"changeQuery\", function (obj) {\n      _this.setState(_objectSpread({}, obj));\n\n      _this.getAllRecipes(obj);\n    });\n\n    _defineProperty(_assertThisInitialized(_this), \"getRandomType\", function () {\n      var rand = Math.floor(Math.random() * _this.allTypesRecipes.length);\n      return _this.allTypesRecipes[rand];\n    });\n\n    _defineProperty(_assertThisInitialized(_this), \"getRandomRecipes\", function () {\n      var q = _this.getRandomType();\n\n      var options = \"&random=true\";\n      _services_recipe_service__WEBPACK_IMPORTED_MODULE_5__[\"default\"].getAllRecipes(q, options).then(function (data) {\n        console.log(data);\n\n        _this.setState({\n          data: data.hits.map(function (item, index) {\n            return new _models_recipe_model__WEBPACK_IMPORTED_MODULE_4__[\"default\"](item.recipe, index);\n          })\n        });\n\n        _this.changeSelectionState(0);\n      });\n    });\n\n    _defineProperty(_assertThisInitialized(_this), \"getTypeRandomRecipes\", function (recipe_type) {\n      var q = recipe_type;\n      var options = \"&cuisineType=\".concat(recipe_type, \"&random=true\");\n      _services_recipe_service__WEBPACK_IMPORTED_MODULE_5__[\"default\"].getAllRecipes(q, options).then(function (data) {\n        console.log(data);\n\n        _this.setState({\n          data: data.hits.map(function (item, index) {\n            return new _models_recipe_model__WEBPACK_IMPORTED_MODULE_4__[\"default\"](item.recipe, index);\n          })\n        });\n\n        _this.changeSelectionState(0);\n      });\n    });\n\n    _defineProperty(_assertThisInitialized(_this), \"componentDidMount\", function () {\n      _this.getRandomRecipes();\n    });\n\n    _this.state = {\n      query: \"\",\n      options: {\n        selectedCuisine: \"All\"\n      },\n      data: [],\n      selectionState: 0\n    };\n    _this.allTypesRecipes = [\"American\", \"Asian\", \"Chinese\", \"Japanese\", \"French\", \"Mexican\", \"Indian\"];\n    return _this;\n  }\n\n  _createClass(Home, [{\n    key: \"getAllRecipes\",\n    value: function getAllRecipes(obj) {\n      var _this2 = this;\n\n      var selectedCuisine = obj.options.selectedCuisine;\n      console.log(obj);\n\n      if (selectedCuisine == \"All\" && obj.query) {\n        _services_recipe_service__WEBPACK_IMPORTED_MODULE_5__[\"default\"].getAllRecipes(obj.query, \"\").then(function (data) {\n          console.log(data);\n\n          _this2.setState({\n            data: data.hits.map(function (item, index) {\n              return new _models_recipe_model__WEBPACK_IMPORTED_MODULE_4__[\"default\"](item.recipe, index);\n            })\n          });\n\n          _this2.changeSelectionState(0);\n        });\n      } else if (obj.query) {\n        //console.log(selectedCuisine.substr(0,selectedCuisine.indexOf(\" \")));\n        var options = \"&cuisineType=\".concat(selectedCuisine.substr(0, selectedCuisine.indexOf(\" \")));\n        _services_recipe_service__WEBPACK_IMPORTED_MODULE_5__[\"default\"].getAllRecipes(obj.query, options).then(function (data) {\n          console.log(data);\n\n          _this2.setState({\n            data: data.hits.map(function (item, index) {\n              return new _models_recipe_model__WEBPACK_IMPORTED_MODULE_4__[\"default\"](item.recipe, index);\n            })\n          });\n\n          _this2.changeSelectionState(0);\n        });\n      }\n    }\n  }, {\n    key: \"render\",\n    value: //{query:this.state.query,options:this.state.options}\n    function render() {\n      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_shared_components_home_header__WEBPACK_IMPORTED_MODULE_2__[\"default\"], {\n        changeQuery: this.changeQuery,\n        getTypeRandomRecipes: this.getTypeRandomRecipes\n      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"main\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_recipies__WEBPACK_IMPORTED_MODULE_3__[\"default\"], {\n        queryData: this.state.data,\n        changeSelectionState: this.changeSelectionState,\n        selectionState: this.state.selectionState\n      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_shared_components_home_footer__WEBPACK_IMPORTED_MODULE_1__[\"default\"], null));\n    }\n  }]);\n\n  return Home;\n}((react__WEBPACK_IMPORTED_MODULE_0___default().Component));\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Home);\n\n//# sourceURL=webpack://myapp/./src/home/home.js?");
-
-/***/ }),
-
-/***/ "./src/home/index.js":
-/*!***************************!*\
-  !*** ./src/home/index.js ***!
-  \***************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"react-dom\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./home */ \"./src/home/home.js\");\n\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1___default().render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_home__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null)), document.getElementById('root'));\n\n//# sourceURL=webpack://myapp/./src/home/index.js?");
 
 /***/ }),
 
@@ -290,6 +300,66 @@ module.exports = require("@mui/material/Stack");
 
 /***/ }),
 
+/***/ "@mui/utils":
+/*!*****************************!*\
+  !*** external "@mui/utils" ***!
+  \*****************************/
+/***/ ((module) => {
+
+module.exports = require("@mui/utils");
+
+/***/ }),
+
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = require("body-parser");
+
+/***/ }),
+
+/***/ "cookie-parser":
+/*!********************************!*\
+  !*** external "cookie-parser" ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = require("cookie-parser");
+
+/***/ }),
+
+/***/ "express":
+/*!**************************!*\
+  !*** external "express" ***!
+  \**************************/
+/***/ ((module) => {
+
+module.exports = require("express");
+
+/***/ }),
+
+/***/ "express-session":
+/*!**********************************!*\
+  !*** external "express-session" ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = require("express-session");
+
+/***/ }),
+
+/***/ "mongoose":
+/*!***************************!*\
+  !*** external "mongoose" ***!
+  \***************************/
+/***/ ((module) => {
+
+module.exports = require("mongoose");
+
+/***/ }),
+
 /***/ "react":
 /*!************************!*\
   !*** external "react" ***!
@@ -370,13 +440,33 @@ module.exports = require("react-bootstrap/Offcanvas");
 
 /***/ }),
 
-/***/ "react-dom":
-/*!****************************!*\
-  !*** external "react-dom" ***!
-  \****************************/
+/***/ "react-dom/server":
+/*!***********************************!*\
+  !*** external "react-dom/server" ***!
+  \***********************************/
 /***/ ((module) => {
 
-module.exports = require("react-dom");
+module.exports = require("react-dom/server");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/***/ ((module) => {
+
+module.exports = require("path");
 
 /***/ })
 
@@ -452,7 +542,7 @@ module.exports = require("react-dom");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/home/index.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./server.js");
 /******/ 	
 /******/ })()
 ;

@@ -1,12 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Home_footer from '../shared/components/home-footer';
 import Home_header from '../shared/components/home-header';
 import Recipes from './components/recipies';
 import Recipe_data from '../models/recipe.model';
 import recipes_api from '../services/recipe.service';
-
-const QueryContext = React.createContext({});
 class Home extends React.Component{
     constructor(props){
         super(props);
@@ -84,10 +81,4 @@ class Home extends React.Component{
         )
     }
 }
-
-ReactDOM.render(
-    <Home />,
-    document.getElementById('root')
-);
-
-export {QueryContext};
+export default Home;

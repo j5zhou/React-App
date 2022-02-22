@@ -17,7 +17,6 @@ class Side_Canvas extends React.Component {
     handleLogout = ()=>{
         getRequest("/logout").then((return_data) => {
           if (return_data.status === 200) {
-              window.location.href="/login";
           } else {
               alert("could not logout");
           }
@@ -25,11 +24,11 @@ class Side_Canvas extends React.Component {
     }
 
     render() {
-      const email = window.sessionStorage.getItem("email");
+      //const email = window.sessionStorage.getItem("email");
         return (
       <Offcanvas show={this.props.canvasIsShow} onHide={this.handleClose} className="off-canvas">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title className="off-canvas-title">Hello, <br/> {email}</Offcanvas.Title>
+          <Offcanvas.Title className="off-canvas-title">Hello, <br/> username</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className="off-canvas-body">
               <div>
