@@ -1,6 +1,6 @@
 const { integerPropType } = require('@mui/utils');
 const mongoose = require('mongoose');
-const DATABASE_URL = "mongodb://localhost:27017/myapp";
+const DATABASE_URL = "mongodb+srv://recipedata:recipedata@cluster0.aj6dv.mongodb.net/recipe?retryWrites=true&w=majority";
 let UserSchema = new mongoose.Schema({
     email: String,
     password: String,
